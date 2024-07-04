@@ -1,0 +1,6 @@
+{
+  "error": {
+      "not_found": "Page not found",
+      "required": "{{label}} is required!"
+  }
+}
