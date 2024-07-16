@@ -23,6 +23,13 @@ class adminRoute {
 			validateBody<AdminAttributes>(AdminValidationSchema()),
 			this.controller.store,
 		);
+    this.router.post(
+			'/edit/:id',
+			uploadSingle('avatar', 'admin'),
+			validateBody<AdminAttributes>(AdminValidationSchema()),
+			this.controller.update,
+		);
+    this.router.delete("/delete/:id", this.controller.delete);
 	}
 }
 

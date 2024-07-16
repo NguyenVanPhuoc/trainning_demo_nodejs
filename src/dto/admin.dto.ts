@@ -3,7 +3,7 @@ import { AdminAttributes } from '../interfaces/admin.interface';
 
 export class AdminDto implements AdminAttributes {
 	@Expose()
-	id!: string;
+	id!: number;
 
 	@Expose()
 	username!: string;

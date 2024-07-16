@@ -11,7 +11,7 @@ class adminRoutes {
 	}
 
 	protected registerRoutes(): void {
-        this.router.use('/auth', authRoutes.router);
+    this.router.use('/auth', authRoutes.router);
 		this.router.use('/admins', adminRoute.router);
 	}
 }

@@ -14,7 +14,7 @@ import { transformerPassword } from '../utils/encryption.util';
 @Unique(['email'])
 export class Admin implements AdminAttributes {
 	@PrimaryGeneratedColumn()
-	id!: string;
+	id!: number;
 
 	@Column({ type: 'varchar' })
 	username!: string;

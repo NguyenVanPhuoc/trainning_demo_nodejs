@@ -1,17 +1,19 @@
-import { AdminDto } from '@/dto/admin.dto';
+import { AdminDto, plainObject } from '@/dto';
 import { BaseService } from './base.service';
 import { Admin } from '@/entities/admin';
-import { Like } from 'typeorm';
+import { Like, Not } from 'typeorm';
 import { UserPayload } from '@/interfaces/auth.interface';
 import { AppError } from '@/utils/errror.util';
 import { trans } from '@/utils/translation.util';
 import { HttpStatusCode } from 'axios';
 import { compareHash, generateRandomPassword } from '@/utils/encryption.util';
 import { env } from '@/configs';
-import { AdminAttributes } from '@/interfaces/admin.interface';
+import { AdminAttributes, ProfileAttributes } from '@/interfaces/admin.interface';
 import { isTrueSet } from '@/utils/string.util';
 import { Status } from '@/constants/status.constant';
 import DataSource from '@/database/datasource';
+import { removeFileInStorage } from '@utils/media.util';
+import { TypeUpdateAdmin } from '@/constants/common.constant';
 
 export class AdminService extends BaseService<Admin> {
 	constructor() {
@@ -97,9 +99,9 @@ export class AdminService extends BaseService<Admin> {
 			HttpStatusCode.Unauthorized
 		  );
 		}
-	  }
+	}
 	  
-	  async createAdmin(adminData: AdminAttributes): Promise<Admin | null> {
+	async createAdmin(adminData: AdminAttributes): Promise<Admin | null> {
 		try {
 		  // Check if username is unique
 		  await this.ensureUniqueField('username', adminData.username);
@@ -134,6 +136,92 @@ export class AdminService extends BaseService<Admin> {
 		  );
 		}
 	}
-	  
-	  
+  public async updateAdmin(
+		id: number,
+		params: AdminAttributes,
+		type: number,
+	): Promise<Admin | null> {
+		try {
+			const admin = await this.find(id);
+			if (!admin) {
+				throw new AppError(
+					trans('error.not_found', {}, 'errors'),
+					HttpStatusCode.Forbidden,
+				);
+			}
+
+			const currenAvatar = admin.avatar;
+
+			const isUsername = await this.exists({
+				username: params.username,
+				id: Not(id),
+			});
+			if (isUsername) {
+				throw new AppError(
+					trans('username.unique', {}, 'errors'),
+					HttpStatusCode.Forbidden,
+				);
+			}
+
+			if (type === TypeUpdateAdmin.ACCOUNT) {
+				params.status = isTrueSet(params.status as unknown as string)
+					? Status.ACTIVE
+					: Status.INACTIVE;
+			}
+
+			if (!params?.birth_date) {
+				params.birth_date = null;
+			}
+
+			const { affected } = await this.update(
+				{ id },
+				params as ProfileAttributes,
+			);
+
+			if (params.avatar && currenAvatar && affected) {
+				removeFileInStorage(currenAvatar);
+			}
+
+			if (affected) {
+				const updatedUser = await this.findOne({ id });
+
+				return plainObject(AdminDto, updatedUser, true);
+			}
+
+			return null;
+		} catch (error: any) {
+			throw new AppError(
+				error.message ||
+					trans('admin.error.error_page_edit', {}, 'translation'),
+				HttpStatusCode.BadRequest,
+			);
+		}
+	}
+
+  public async deleteAdmin(id: number): Promise<Admin | true> {
+    try {
+      const admin = await this.find(id);
+      if (!admin) {
+        throw new AppError(
+          trans('error.not_found', {}, 'errors'),
+          HttpStatusCode.Forbidden
+        );
+      }
+  
+      const currentAvatar = admin.avatar;
+      const result = await this.delete({ id });
+  
+      if (currentAvatar && result) {
+        removeFileInStorage(currentAvatar);
+      }
+  
+      return true;
+    } catch (error: any) {
+      throw new AppError(
+        error.message ||
+          trans('admin.error.error_page_delete', {}, 'translation'),
+        HttpStatusCode.BadRequest
+      );
+    }
+  }  
 }
