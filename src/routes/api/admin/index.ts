@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import authRoutes from './auth.route';
-import adminRoute from './admin.route'
+import adminRoute from './admin.route';
 
-class adminRoutes {
+class AdminRoutes {
 	public router: Router;
 
 	constructor() {
@@ -11,9 +11,9 @@ class adminRoutes {
 	}
 
 	protected registerRoutes(): void {
-    this.router.use('/auth', authRoutes.router);
+		this.router.use('/auth', authRoutes.router);
 		this.router.use('/admins', adminRoute.router);
 	}
 }
 
-export default new adminRoutes();
+export default new AdminRoutes();

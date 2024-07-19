@@ -3,8 +3,9 @@ import { getLoginValidationSchema } from '@validators/auth.validator';
 import AuthController from '@controllers/admin/auth.controller';
 import { validateBody } from '@utils/validation.util';
 import { AuthAttributes } from '@interfaces/auth.interface';
+import { formDataNoFile } from '@/utils/media.util';
 
-class authRoutes {
+class AuthRoutes {
 	public router: Router;
 	protected controller: AuthController;
 
@@ -17,10 +18,11 @@ class authRoutes {
 	protected registerRoutes(): void {
 		this.router.post(
 			'/login',
+			formDataNoFile(),  // Xử lý form-data không có file
 			validateBody<AuthAttributes>(getLoginValidationSchema()),
 			this.controller.login,
 		);
 	}
 }
 
-export default new authRoutes();
+export default new AuthRoutes();

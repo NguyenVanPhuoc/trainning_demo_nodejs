@@ -49,14 +49,15 @@ export const uploadSingle = (input: string, path: string) => {
 	return upload(storage).single(input);
 };
 
-export const formData = () => {
+// Middleware để xử lý form-data không có file
+export const formDataNoFile = () => {
 	return multer().none();
 };
 
 export const removeFileInStorage = (filePath?: string): void => {
 	if (!filePath) return;
 
-	const fullPath = '/app/public/' + filePath;
+	const fullPath = path.join(process.cwd(), 'public', filePath);
 	if (existsSync(fullPath)) {
 		unlinkSync(fullPath);
 	}
