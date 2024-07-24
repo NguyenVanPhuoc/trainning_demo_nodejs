@@ -49,3 +49,12 @@ export enum Time {
 	END_TIME = 17,
 	UTC = 7,
 }
+
+export enum Role {
+	ADMIN = 1,
+	MANAGER = 2,
+	DEAN = 3,
+	NVKP = 4,
+	TKVT = 5,
+	NVVT = 6,
+}

@@ -31,7 +31,7 @@ class Server {
 		this.app.use(cors(corsOptions));
 		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
-		this.app.use(express.static(path.join(__dirname, 'uploads')));
+		this.app.use(express.static(path.join(process.cwd(), 'public')));
 		this.app.use(i18Handle(i18nConfig));
 
 		// header

@@ -35,6 +35,7 @@ services:
       args:
       - EXPOSE_PORT=$APP_PORT
     user: "1000:1000"
+    tty: true
     command: "bash ./scripts/start.sh"
     ports:
       - '${APP_PORT:-3000}:${APP_PORT}'

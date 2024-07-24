@@ -3,7 +3,7 @@ import { apiSuccess } from '@utils/response.util';
 import { trans } from '@utils/translation.util';
 import { AdminService } from '@services/admin.service';
 import { UserPayload } from '@/interfaces/auth.interface';
-import { getExpiresIn, sign } from '@/utils/jwt.util'
+import { getExpiresIn, sign } from '@/utils/jwt.util';
 import { isTrueSet } from '@/utils/string.util';
 
 const service = new AdminService();
@@ -15,7 +15,6 @@ export default class AuthController {
 		next: NextFunction,
 	): Promise<void> {
 		try {
-			
 			let loggedUser: UserPayload | null = null;
 			const { email, password, remember } = req.body;
 			const isRemember = isTrueSet(remember);

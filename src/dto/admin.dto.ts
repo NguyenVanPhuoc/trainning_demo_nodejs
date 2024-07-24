@@ -1,5 +1,6 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { AdminAttributes } from '../interfaces/admin.interface';
+import { env } from '@/configs';
 
 export class AdminDto implements AdminAttributes {
 	@Expose()
@@ -26,7 +27,15 @@ export class AdminDto implements AdminAttributes {
 	birth_date!: string;
 
 	@Expose()
+	@Transform(({ value }) => {
+		if (!value) return;
+
+		return env.app.url + value;
+	})
 	avatar!: string;
+
+	@Expose()
+	role!: number;
 
 	@Expose()
 	status!: number;

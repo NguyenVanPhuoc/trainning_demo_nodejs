@@ -18,7 +18,7 @@ class AuthRoutes {
 	protected registerRoutes(): void {
 		this.router.post(
 			'/login',
-			formDataNoFile(),  // Xử lý form-data không có file
+			formDataNoFile(), // Xử lý form-data không có file
 			validateBody<AuthAttributes>(getLoginValidationSchema()),
 			this.controller.login,
 		);

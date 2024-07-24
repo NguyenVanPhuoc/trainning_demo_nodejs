@@ -62,6 +62,11 @@ export class CreateAdminsTable1709175267128 implements MigrationInterface {
 						isNullable: true,
 					},
 					{
+						name: 'role',
+						type: 'integer',
+						isNullable: false,
+					},
+					{
 						name: 'status',
 						type: 'integer',
 						isNullable: false,

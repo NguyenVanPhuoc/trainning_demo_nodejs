@@ -46,6 +46,9 @@ export class Admin implements AdminAttributes {
 	avatar!: string;
 
 	@Column({ type: 'int' })
+	role!: number;
+
+	@Column({ type: 'int' })
 	status!: number;
 
 	@CreateDateColumn({

@@ -14,22 +14,22 @@ class adminRoute {
 		this.controller = new AdminController();
 		this.registerRoutes();
 	}
-
 	protected registerRoutes(): void {
 		this.router.get('/', this.controller.getList);
 		this.router.post(
-			'/create',
+			'/store',
 			uploadSingle('avatar', 'admin'),
 			validateBody<AdminAttributes>(AdminValidationSchema()),
 			this.controller.store,
 		);
-    this.router.post(
-			'/edit/:id',
+		this.router.get('/edit/:id', this.controller.edit);
+		this.router.post(
+			'/update/:id',
 			uploadSingle('avatar', 'admin'),
 			validateBody<AdminAttributes>(AdminValidationSchema()),
 			this.controller.update,
 		);
-    this.router.delete("/delete/:id", this.controller.delete);
+		this.router.delete('/delete/:id', this.controller.delete);
 	}
 }
 

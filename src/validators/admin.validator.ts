@@ -35,6 +35,7 @@ export const AdminValidationSchema =
 					.allow('', null),
 				avatar: Joi.string().allow('', null),
 				status: Joi.boolean(),
+				role: Joi.number().integer().label('Role'),
 			}),
 			messages: {
 				'any.required': 'required',

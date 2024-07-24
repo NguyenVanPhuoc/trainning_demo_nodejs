@@ -3,15 +3,15 @@
 		"experimentalDecorators": true,
 		"target": "es2016",
 		"module": "commonjs",
-		"rootDir": "./src",
+		"rootDir": "./",
 		"moduleResolution": "node",
-		"baseUrl": "./",
+		"baseUrl": ".",
 		"typeRoots": [
-			"./node_modules/@types",
+			"./node_modules/@types"
 		],
 		"types": [
 			"node",
-			"jest",
+			"jest"
 		],
 		"resolveJsonModule": true,
 		"sourceMap": true,

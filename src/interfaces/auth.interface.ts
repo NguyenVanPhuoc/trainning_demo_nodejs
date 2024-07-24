@@ -19,9 +19,4 @@ interface AuthUserInterface extends UserPayload {
 	exp: number;
 }
 
-
-export {
-	AuthAttributes,
-	UserPayload,
-	AuthUserInterface,
-};
+export { AuthAttributes, UserPayload, AuthUserInterface };

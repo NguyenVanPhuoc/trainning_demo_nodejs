@@ -8,12 +8,15 @@ import { trans } from '@/utils/translation.util';
 import { HttpStatusCode } from 'axios';
 import { compareHash, generateRandomPassword } from '@/utils/encryption.util';
 import { env } from '@/configs';
-import { AdminAttributes, ProfileAttributes } from '@/interfaces/admin.interface';
+import {
+	AdminAttributes,
+	ProfileAttributes,
+} from '@/interfaces/admin.interface';
 import { isTrueSet } from '@/utils/string.util';
 import { Status } from '@/constants/status.constant';
 import DataSource from '@/database/datasource';
 import { removeFileInStorage } from '@utils/media.util';
-import { TypeUpdateAdmin } from '@/constants/common.constant';
+import { Role, TypeUpdateAdmin } from '@/constants/common.constant';
 
 export class AdminService extends BaseService<Admin> {
 	constructor() {
@@ -21,7 +24,7 @@ export class AdminService extends BaseService<Admin> {
 		super(adminRepository, AdminDto);
 	}
 
-    public async login(
+	public async login(
 		email: string,
 		password: string,
 		expiresIn: number,
@@ -57,14 +60,12 @@ export class AdminService extends BaseService<Admin> {
 			username: admin.username,
 			full_name: admin?.full_name,
 			avatar: admin?.avatar ? env.app.url + admin?.avatar : '',
+			role: admin?.role,
 			expires: expiresIn,
 		};
 	}
 
-	public async getListAccountAdmin(
-		keyword: string,
-		status: number | null,
-	) {
+	public async getListAccountAdmin(keyword: string, status: number | null) {
 		const searchTerm = Like(`%${keyword}%`);
 		let conditions = {};
 
@@ -91,52 +92,61 @@ export class AdminService extends BaseService<Admin> {
 			id: 'DESC',
 		});
 	}
-	private async ensureUniqueField(fieldName: keyof AdminAttributes, value: string): Promise<void> {
+	private async ensureUniqueField(
+		fieldName: keyof AdminAttributes,
+		value: string,
+	): Promise<void> {
 		const fieldCheck = await this.findOne({ [fieldName]: value });
 		if (fieldCheck) {
-		  throw new AppError(
-			trans(`${fieldName}.unique`, {}, 'errors'),
-			HttpStatusCode.Unauthorized
-		  );
+			throw new AppError(
+				trans(`${fieldName}.unique`, {}, 'errors'),
+				HttpStatusCode.Unauthorized,
+			);
 		}
 	}
-	  
+
 	async createAdmin(adminData: AdminAttributes): Promise<Admin | null> {
 		try {
-		  // Check if username is unique
-		  await this.ensureUniqueField('username', adminData.username);
-	  
-		  // Check if email is unique
-		  await this.ensureUniqueField('email', adminData.email);
-	  
-		  // Set status
-		  adminData.status = isTrueSet(adminData.status as unknown as string)
-			? Status.ACTIVE
-			: Status.INACTIVE;
-	  
-		  // Generate random password if not provided
-		  if (!adminData.password) {
-			const randomPassword = generateRandomPassword(8);
-			adminData.password = randomPassword;
-		  }
-	  
-		  //Set birth_date to null if not provided
-		  if (!adminData.birth_date) {
-			adminData.birth_date = null;
-		  }
-	  
-		  // Create admin account
-		  const account = await this.create(adminData as AdminAttributes);
-		  return account;
+			// Check if username is unique
+			await this.ensureUniqueField('username', adminData.username);
+
+			// Check if email is unique
+			await this.ensureUniqueField('email', adminData.email);
+
+			// Set status
+			adminData.status = isTrueSet(adminData.status as unknown as string)
+				? Status.ACTIVE
+				: Status.INACTIVE;
+
+			// Generate random password if not provided
+			if (!adminData.password) {
+				const randomPassword = generateRandomPassword(8);
+				adminData.password = randomPassword;
+			}
+
+			//Set birth_date to null if not provided
+			if (!adminData.birth_date) {
+				adminData.birth_date = null;
+			}
+
+			// Set default role if not provided
+			if (adminData.role === undefined) {
+				adminData.role = Role.ADMIN; // Set to the appropriate default role value
+			}
+
+			// Create admin account
+			const account = await this.create(adminData as AdminAttributes);
+			return account;
 		} catch (error: any) {
-		  // Provide a meaningful error message
-		  throw new AppError(
-			error.message || trans('admin.error.error_page_create', {}, 'translation'),
-			HttpStatusCode.BadRequest
-		  );
+			// Provide a meaningful error message
+			throw new AppError(
+				error.message ||
+					trans('admin.error.error_page_create', {}, 'translation'),
+				HttpStatusCode.BadRequest,
+			);
 		}
 	}
-  public async updateAdmin(
+	public async updateAdmin(
 		id: number,
 		params: AdminAttributes,
 		type: number,
@@ -168,7 +178,6 @@ export class AdminService extends BaseService<Admin> {
 					? Status.ACTIVE
 					: Status.INACTIVE;
 			}
-
 			if (!params?.birth_date) {
 				params.birth_date = null;
 			}
@@ -184,7 +193,6 @@ export class AdminService extends BaseService<Admin> {
 
 			if (affected) {
 				const updatedUser = await this.findOne({ id });
-
 				return plainObject(AdminDto, updatedUser, true);
 			}
 
@@ -198,30 +206,30 @@ export class AdminService extends BaseService<Admin> {
 		}
 	}
 
-  public async deleteAdmin(id: number): Promise<Admin | true> {
-    try {
-      const admin = await this.find(id);
-      if (!admin) {
-        throw new AppError(
-          trans('error.not_found', {}, 'errors'),
-          HttpStatusCode.Forbidden
-        );
-      }
-  
-      const currentAvatar = admin.avatar;
-      const result = await this.delete({ id });
-  
-      if (currentAvatar && result) {
-        removeFileInStorage(currentAvatar);
-      }
-  
-      return true;
-    } catch (error: any) {
-      throw new AppError(
-        error.message ||
-          trans('admin.error.error_page_delete', {}, 'translation'),
-        HttpStatusCode.BadRequest
-      );
-    }
-  }  
+	public async deleteAdmin(id: number): Promise<Admin | true> {
+		try {
+			const admin = await this.find(id);
+			if (!admin) {
+				throw new AppError(
+					trans('error.not_found', {}, 'errors'),
+					HttpStatusCode.Forbidden,
+				);
+			}
+
+			const currentAvatar = admin.avatar;
+			const result = await this.delete({ id });
+
+			if (currentAvatar && result) {
+				removeFileInStorage(currentAvatar);
+			}
+
+			return true;
+		} catch (error: any) {
+			throw new AppError(
+				error.message ||
+					trans('admin.error.error_page_delete', {}, 'translation'),
+				HttpStatusCode.BadRequest,
+			);
+		}
+	}
 }

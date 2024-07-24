@@ -8,6 +8,7 @@ interface AdminAttributes {
 	phone?: string;
 	birth_date?: string | null;
 	avatar?: string;
+	role?: number;
 	status?: number;
 	created_at: Date;
 	updated_at: Date;
@@ -23,7 +24,8 @@ interface ProfileAttributes {
 	birth_date?: string | null;
 	avatar?: string;
 }
-  
-interface AdminCreationAttributes extends Omit<AdminAttributes, 'id' | 'created_at' | 'updated_at'> {}
-  
+
+interface AdminCreationAttributes
+	extends Omit<AdminAttributes, 'id' | 'created_at' | 'updated_at'> {}
+
 export { AdminAttributes, AdminCreationAttributes, ProfileAttributes };

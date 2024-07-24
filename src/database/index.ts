@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { logger } from '../configs'
+import { logger } from '../configs';
 import MainDataSource from './datasource';
 import { DataSource } from 'typeorm';
 
@@ -16,9 +16,7 @@ class Database {
 
 	async connectToDatabase() {
 		try {
-			await Promise.all([
-				this.connection.initialize(),
-			]);
+			await Promise.all([this.connection.initialize()]);
 			console.log('Connection has been established successfully.');
 		} catch (error) {
 			logger.error('Unable to connect to the database:', error);
