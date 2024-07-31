@@ -42,6 +42,7 @@ services:
       - '${APP_DEBUG_PORT:-9229}:9229'
     volumes:
       - .:/app
+      - /app/node_modules # Prevents the container from using the host's node_modules
     depends_on:
       - mysql
     restart: unless-stopped

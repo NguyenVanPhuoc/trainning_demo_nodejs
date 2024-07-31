@@ -1,5 +1,6 @@
 import { plainToInstance, ClassConstructor } from 'class-transformer';
 import { AdminDto } from './admin.dto';
+import { DepartmentnDto } from './department.do';
 
 const plainObject = <T, V>(
 	dto: ClassConstructor<T>,
@@ -12,4 +13,4 @@ const plainObject = <T, V>(
 	});
 };
 
-export { plainObject, AdminDto };
+export { plainObject, AdminDto, DepartmentnDto };

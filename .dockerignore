@@ -45,10 +45,5 @@ dist
 *Dockerfile*
 *docker-compose*
 
-# Deploy folder and file
-deploy
-.gitlab-ci.yml
-
 # Documentation file
 *.md
-\ No newline at end of file
