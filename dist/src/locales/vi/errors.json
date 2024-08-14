@@ -1,0 +1,23 @@
+{
+  "email": {
+      "mismatch": "Email không tồn tại!",
+      "unique": "Email đã tồn tại!"
+  },
+  "password": {
+      "invalid": "Mật khẩu không chính xác!"
+  },
+  "username": {
+      "unique": "Username đã tồn tại!"
+  },
+  "image": {
+      "mimetype": "Vui lòng tải lên phần mở rộng tập tin hợp lệ jpg, png, jpeg, gif"
+  },
+  "auth": {
+      "unauthorized": "Bạn không được phép xem trang này"
+  },
+  "status": {
+      "inactive": "Tài khoản của bạn đã bị khóa"
+  },
+  "error_id": "ID không tồn tại",
+  "invalid_current_password": "Mật khẩu cũ không chính xác"
+}

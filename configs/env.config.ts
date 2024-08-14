@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
-import { description, name, version } from '../../package.json';
+import { description, name, version } from '../package.json';
 
 dotenv.config({
 	path: path.join(process.cwd(), '.env'),
