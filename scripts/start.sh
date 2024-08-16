@@ -5,5 +5,5 @@ if [ ! -d "$NODE_MODULE_DIR" ]; then
   npm install
 fi
 
-echo "====== Running project with nodemon ======"
-npx nodemon --watch src --ext ts,js --exec ts-node src/index.ts
+echo "====== run project ======"
+npm run dev
