@@ -2,7 +2,7 @@ import {
 	Entity,
 	PrimaryGeneratedColumn,
 	Column,
-  Unique,
+	Unique,
 	CreateDateColumn,
 	UpdateDateColumn,
 } from 'typeorm';

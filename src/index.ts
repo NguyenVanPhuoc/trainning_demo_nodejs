@@ -33,6 +33,7 @@ class Server {
 		this.app.use(express.urlencoded({ extended: true }));
 		this.app.use(express.static(path.join(process.cwd(), 'public')));
 		this.app.use(i18Handle(i18nConfig));
+		this.app.use(handleLanguage);
 
 		// header
 		header(this.app);
@@ -42,7 +43,6 @@ class Server {
 
 		// Applying middleware and error handling
 		this.app.use(errorHandler);
-		this.app.use(handleLanguage);
 
 		// Format response middleware
 		this.app.use(formatResponse);

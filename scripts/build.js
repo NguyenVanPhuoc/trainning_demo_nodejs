@@ -15,4 +15,3 @@ ncp('.env', 'dist/.env', function (err) {
 	}
 	console.log('done!');
 });
-

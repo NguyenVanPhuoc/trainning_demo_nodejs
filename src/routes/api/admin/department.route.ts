@@ -18,18 +18,18 @@ class departmentRoute {
 		this.router.get('/', this.controller.getList);
 		this.router.post(
 			'/store',
-      formDataNoFile(),
+			formDataNoFile(),
 			validateBody<DepartmentAttributes>(DepartmentValidationSchema()),
 			this.controller.store,
 		);
-    this.router.get('/edit/:id', this.controller.edit);
-    this.router.post(
+		this.router.get('/edit/:id', this.controller.edit);
+		this.router.post(
 			'/update/:id',
 			formDataNoFile(),
 			validateBody<DepartmentAttributes>(DepartmentValidationSchema()),
 			this.controller.update,
 		);
-    this.router.delete('/delete/:id', this.controller.delete);
+		this.router.delete('/delete/:id', this.controller.delete);
 	}
 }
 

@@ -2,6 +2,9 @@ import path from 'path';
 import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import { LanguageDetector } from 'i18next-http-middleware';
+import { AcceptLanguage } from '@/constants/common.constant';
+
+const preloadLanguage: string[] = Object.values(AcceptLanguage);
 
 i18next
 	.use(Backend)
@@ -15,8 +18,8 @@ i18next
 			order: ['querystring', 'cookie'],
 			caches: ['cookie'],
 		},
-		preload: ['vi', 'jp'],
-		ns: ['validation', 'translation'],
+		preload: preloadLanguage,
+		ns: ['validation', 'translation', 'errors'],
 		defaultNS: 'translation',
 	});
 

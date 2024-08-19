@@ -24,7 +24,7 @@ export default class DepartmentController {
 		}
 	}
 
-  public async store(
+	public async store(
 		req: Request,
 		res: Response,
 		next: NextFunction,
@@ -40,7 +40,7 @@ export default class DepartmentController {
 		}
 	}
 
-  public async edit(
+	public async edit(
 		req: Request,
 		res: Response,
 		next: NextFunction,
@@ -62,7 +62,7 @@ export default class DepartmentController {
 		}
 	}
 
-  public async update(
+	public async update(
 		req: Request,
 		res: Response,
 		next: NextFunction,
@@ -79,7 +79,7 @@ export default class DepartmentController {
 			next(error);
 		}
 	}
-  public async delete(
+	public async delete(
 		req: Request,
 		res: Response,
 		next: NextFunction,
