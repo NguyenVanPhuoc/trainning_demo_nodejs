@@ -20,7 +20,7 @@ export default {
 		host: process.env.APP_HOST || 'localhost',
 		node_env: process.env.APP_ENV || 'development',
 		allow_origin: process.env.ALLOW_ORIGIN || '*',
-		url: process.env.APP_URL || 'http://192.168.3.152:3001/',
+		url: process.env.APP_URL || 'http://47.129.153.41:3000/',
 		salt_round: (() => {
 			const saltRounds = process.env.SALT_ROUND;
 			if (saltRounds && !isNaN(Number(saltRounds))) {

@@ -1,3 +1,4 @@
+import path from 'path';
 import { env } from '../configs';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
@@ -15,6 +16,6 @@ export default new DataSource({
 	extra: {
 		insecureAuth: true,
 	},
-	entities: ['src/entities/*.ts'],
-	migrations: ['src/database/migrations/*.ts'],
+	entities: [path.join(__dirname, '../entities/*.{ts,js}')],
+	migrations: [path.join(__dirname, '../database/migrations/*.{ts,js}')],
 } as DataSourceOptions);
